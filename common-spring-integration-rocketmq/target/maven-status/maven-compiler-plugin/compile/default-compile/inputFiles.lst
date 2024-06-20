@@ -1,0 +1,16 @@
+D:\Code\Leads\SalesLeadDistribution\common-spring-integration-rocketmq\src\main\java\com\bitauto\ep\dujiangyan\common\infrastructure\spring\integration\rocketmq\support\MessageConverter.java
+D:\Code\Leads\SalesLeadDistribution\common-spring-integration-rocketmq\src\main\java\com\bitauto\ep\dujiangyan\common\infrastructure\spring\integration\rocketmq\support\RandomRangeDelayTimeLevelProviderImpl.java
+D:\Code\Leads\SalesLeadDistribution\common-spring-integration-rocketmq\src\main\java\com\bitauto\ep\dujiangyan\common\infrastructure\spring\integration\rocketmq\support\DefaultRocketMqHeaderMapper.java
+D:\Code\Leads\SalesLeadDistribution\common-spring-integration-rocketmq\src\main\java\com\bitauto\ep\dujiangyan\common\infrastructure\spring\integration\rocketmq\support\MessageConversionException.java
+D:\Code\Leads\SalesLeadDistribution\common-spring-integration-rocketmq\src\main\java\com\bitauto\ep\dujiangyan\common\infrastructure\spring\integration\rocketmq\support\RocketMqHeaders.java
+D:\Code\Leads\SalesLeadDistribution\common-spring-integration-rocketmq\src\main\java\com\bitauto\ep\dujiangyan\common\infrastructure\spring\integration\rocketmq\config\BootstrapAutoConfiguration.java
+D:\Code\Leads\SalesLeadDistribution\common-spring-integration-rocketmq\src\main\java\com\bitauto\ep\dujiangyan\common\infrastructure\spring\integration\rocketmq\support\DelayTimeLevelProvider.java
+D:\Code\Leads\SalesLeadDistribution\common-spring-integration-rocketmq\src\main\java\com\bitauto\ep\dujiangyan\common\infrastructure\spring\integration\rocketmq\config\RocketMqNamespaceHandler.java
+D:\Code\Leads\SalesLeadDistribution\common-spring-integration-rocketmq\src\main\java\com\bitauto\ep\dujiangyan\common\infrastructure\spring\integration\rocketmq\support\RocketMqHeaderMapper.java
+D:\Code\Leads\SalesLeadDistribution\common-spring-integration-rocketmq\src\main\java\com\bitauto\ep\dujiangyan\common\infrastructure\spring\integration\rocketmq\channel\DelayChannel.java
+D:\Code\Leads\SalesLeadDistribution\common-spring-integration-rocketmq\src\main\java\com\bitauto\ep\dujiangyan\common\infrastructure\spring\integration\rocketmq\config\DelayChannelFactoryBean.java
+D:\Code\Leads\SalesLeadDistribution\common-spring-integration-rocketmq\src\main\java\com\bitauto\ep\dujiangyan\common\infrastructure\spring\integration\rocketmq\support\MappingUtils.java
+D:\Code\Leads\SalesLeadDistribution\common-spring-integration-rocketmq\src\main\java\com\bitauto\ep\dujiangyan\common\infrastructure\spring\integration\rocketmq\config\DelayChannelParser.java
+D:\Code\Leads\SalesLeadDistribution\common-spring-integration-rocketmq\src\main\java\com\bitauto\ep\dujiangyan\common\infrastructure\spring\integration\rocketmq\support\DefaultJacksonMessageConverter.java
+D:\Code\Leads\SalesLeadDistribution\common-spring-integration-rocketmq\src\main\java\com\bitauto\ep\dujiangyan\common\infrastructure\spring\integration\rocketmq\channel\AbstractRocketMqChannel.java
+D:\Code\Leads\SalesLeadDistribution\common-spring-integration-rocketmq\src\main\java\com\bitauto\ep\dujiangyan\common\infrastructure\spring\integration\rocketmq\channel\AbstractSubscribableRocketMqChannel.java

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			xmlns:tool="http://www.springframework.org/schema/tool"
+			xmlns:integration="http://www.springframework.org/schema/integration"
+			xmlns="http://www.bitauto.com/ep/schema/integration/rocketmq"
+			targetNamespace="http://www.bitauto.com/ep/schema/integration/rocketmq"
+			elementFormDefault="qualified">
+
+	<xsd:import namespace="http://www.springframework.org/schema/beans"/>
+	<xsd:import namespace="http://www.springframework.org/schema/tool"/>
+	<xsd:import namespace="http://www.springframework.org/schema/integration"
+				schemaLocation="https://www.springframework.org/schema/integration/spring-integration.xsd"/>
+
+
+	<xsd:element name="delay-channel">
+		<xsd:annotation>
+			<xsd:documentation>
+				Creates a delay channel that is backed by an rocketmq Queue.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="channelType">
+					<xsd:attribute name="topic" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation>
+								rocketmq topic for producer and consumer
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+					<xsd:attribute name="produce-tags" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation>
+								tags for producer send message
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+					<xsd:attribute name="producer" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation>
+								rocketmq producer
+							</xsd:documentation>
+							<xsd:appinfo>
+								<tool:annotation kind="ref">
+									<tool:expected-type type="org.apache.rocketmq.client.producer.MQProducer"/>
+								</tool:annotation>
+							</xsd:appinfo>
+						</xsd:annotation>
+					</xsd:attribute>
+					<xsd:attribute name="consumer" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation>
+								rocketmq consumer
+							</xsd:documentation>
+							<xsd:appinfo>
+								<tool:annotation kind="ref">
+									<tool:expected-type type="org.apache.rocketmq.client.consumer.MQPushConsumer"/>
+								</tool:annotation>
+							</xsd:appinfo>
+						</xsd:annotation>
+					</xsd:attribute>
+					<xsd:attribute name="delay-time-level-provider" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation>
+								rocketmq delay level provider
+							</xsd:documentation>
+							<xsd:appinfo>
+								<tool:annotation kind="ref">
+									<tool:expected-type
+											type="com.bitauto.ep.dujiangyan.common.infrastructure.spring.integration.rocketmq.support.DelayTimeLevelProvider"/>
+								</tool:annotation>
+							</xsd:appinfo>
+						</xsd:annotation>
+					</xsd:attribute>
+					<xsd:attribute name="delay-time-level" type="xsd:int" default="1">
+						<xsd:annotation>
+							<xsd:documentation>
+								rocketmq delay time level
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+					<xsd:attribute name="tag-select-express" type="xsd:string" default="*">
+						<xsd:annotation>
+							<xsd:documentation>
+								rocketmq consumer tag select express
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+					<xsd:attribute name="rocketmq-message-converter" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation>
+								rocketmq message converter
+							</xsd:documentation>
+							<xsd:appinfo>
+								<tool:annotation kind="ref">
+									<tool:expected-type
+											type="com.bitauto.ep.dujiangyan.common.infrastructure.spring.integration.rocketmq.support.MessageConverter"/>
+								</tool:annotation>
+							</xsd:appinfo>
+						</xsd:annotation>
+					</xsd:attribute>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+
+	<xsd:complexType name="channelType">
+		<xsd:annotation>
+			<xsd:documentation>
+				Base type for 'channel' and 'publish-subscribe-channel'.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="interceptors" type="integration:channelInterceptorsType" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[
+	A list of ChannelInterceptor instances to be applied to this channel.
+					]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="id" type="xsd:string" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					Unique ID for this Message Channel.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="default-delivery-mode">
+			<xsd:annotation>
+				<xsd:documentation>
+					The default delivery mode for messages; 'PERSISTENT' or 'NON_PERSISTENT'. Overridden if the
+					'header-mapper'
+					sets the delivery mode. The 'DefaultHeaderMapper' sets the value if the
+					Spring Integration message header 'amqp_deliveryMode' is present. If this attribute is not supplied
+					and
+					the header mapper doesn't set it, the default depends on the underlying spring-amqp
+					'MessagePropertiesConverter'
+					used by the 'RabbitTemplate'. If that is not customized at all, the default is 'PERSISTENT'.
+				</xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:union memberTypes="deliveryModeEnumeration xsd:string"/>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="extract-payload">
+			<xsd:annotation>
+				<xsd:documentation>
+					Set to 'true' to extract the message payload and map the o.s.messaging.Message to an
+					o.s.amqp.core.Message in
+					a similar manner to a pair of channel adapters. When 'false' the entire message is converted
+					requiring either
+					Java serializable contents or a custom message converter. Also see inbound and outbound mapped
+					headers.
+					Also see 'headers-last', which only applies if this is 'true'.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="outbound-header-mapper">
+			<xsd:annotation>
+				<xsd:documentation>
+					map spring integration header to rocketmq properties
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="inbound-header-mapper">
+			<xsd:annotation>
+				<xsd:documentation>
+					map rocketmq properties to spring integration header
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+
+	<xsd:simpleType name="deliveryModeEnumeration">
+		<xsd:restriction base="xsd:token">
+			<xsd:enumeration value="PERSISTENT"/>
+			<xsd:enumeration value="NON_PERSISTENT"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:int-rocket="http://www.bitauto.com/ep/schema/integration/rocketmq"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/integration https://www.springframework.org/schema/integration/spring-integration.xsd
+       http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.bitauto.com/ep/schema/integration/rocketmq http://www.bitauto.com/ep/schema/integration/rocketmq/spring-integration-rocketmq-1.0.xsd"
+>
+
+    <bean id="sessionCredentials" class="org.apache.rocketmq.acl.common.SessionCredentials">
+        <constructor-arg name="accessKey" value="1bec3432c0a84c4b81c436070a5c317e"/>
+        <constructor-arg name="secretKey" value="12803a4033244880babac39790aa4961"/>
+    </bean>
+    <bean id="rpcHook" class="org.apache.rocketmq.acl.common.AclClientRPCHook">
+        <constructor-arg ref="sessionCredentials"/>
+    </bean>
+    <bean id="beanRocketMqProducer" class="org.apache.rocketmq.client.producer.DefaultMQProducer">
+        <constructor-arg name="producerGroup" value="yc_topic_ep_lead_ad_delay_producer"/>
+        <constructor-arg name="rpcHook" ref="rpcHook"/>
+        <property name="namesrvAddr" value="192.168.200.63:9876"/>
+        <property name="sendMsgTimeout" value="999999999"/>
+        <property name="instanceName" value="beanRocketMqProducer"/>
+    </bean>
+    <bean id="beanRockerMqConsumer" class="org.apache.rocketmq.client.consumer.DefaultMQPushConsumer">
+        <constructor-arg name="rpcHook" ref="rpcHook"/>
+        <property name="namesrvAddr" value="192.168.200.63:9876"/>
+        <property name="consumerGroup" value="yc_topic_ep_lead_ad_delay_consumer"/>
+        <property name="instanceName" value="beanRockerMqConsumer"/>
+    </bean>
+
+    <bean id="sessionCredentials2" class="org.apache.rocketmq.acl.common.SessionCredentials">
+        <constructor-arg name="accessKey" value="208839e4b3af4cffb5fb60b2cbad996c"/>
+        <constructor-arg name="secretKey" value="5ffe67f0fbdd42f3ae241a96a81a3f88"/>
+    </bean>
+    <bean id="rpcHook2" class="org.apache.rocketmq.acl.common.AclClientRPCHook">
+        <constructor-arg ref="sessionCredentials2"/>
+    </bean>
+    <bean id="beanRocketMqProducer2" class="org.apache.rocketmq.client.producer.DefaultMQProducer">
+        <constructor-arg name="producerGroup" value="yc_topic_ep_lead_request_delay_producer"/>
+        <constructor-arg name="rpcHook" ref="rpcHook2"/>
+        <property name="namesrvAddr" value="192.168.200.63:9876"/>
+        <property name="sendMsgTimeout" value="999999999"/>
+        <property name="instanceName" value="beanRocketMqProducer2"/>
+    </bean>
+    <bean id="beanRockerMqConsumer2" class="org.apache.rocketmq.client.consumer.DefaultMQPushConsumer">
+        <constructor-arg name="rpcHook" ref="rpcHook2"/>
+        <property name="namesrvAddr" value="192.168.200.63:9876"/>
+        <property name="consumerGroup" value="yc_topic_ep_lead_request_delay_consumer"/>
+        <property name="instanceName" value="beanRockerMqConsumer2"/>
+    </bean>
+
+    <bean id="rocketMqMessageConverter"
+          class="com.bitauto.ep.dujiangyan.common.infrastructure.spring.integration.rocketmq.support.DefaultJacksonMessageConverter"></bean>
+
+    <bean id="randomRangeDelayTimeLevelProvider"
+          class="com.bitauto.ep.dujiangyan.common.infrastructure.spring.integration.rocketmq.support.RandomRangeDelayTimeLevelProviderImpl">
+        <constructor-arg name="begin" value="1"/>
+        <constructor-arg name="end" value="3"/>
+    </bean>
+
+
+    <int-rocket:delay-channel id="channel.delay"
+                              topic="yc_topic_ep_lead_ad_delay"
+                              produce-tags="tags"
+                              producer="beanRocketMqProducer"
+                              consumer="beanRockerMqConsumer"
+                              tag-select-express="*"
+                              rocketmq-message-converter="rocketMqMessageConverter"
+                              delay-time-level="1"
+    />
+    <int-rocket:delay-channel id="channel.delay2"
+                              topic="yc_topic_ep_lead_request_delay"
+                              produce-tags="tags"
+                              producer="beanRocketMqProducer2"
+                              consumer="beanRockerMqConsumer2"
+                              tag-select-express="*"
+                              rocketmq-message-converter="rocketMqMessageConverter"
+                              delay-time-level="1"
+    />
+    <int:service-activator id="consolePrint" input-channel="channel.delay" ref="command" method="handleMsg"/>
+    <int:service-activator id="consolePrint2" input-channel="channel.delay2" ref="command" method="handleMsg2"/>
+
+    <int:logging-channel-adapter id="adapter.logger" channel="errorChannel"/>
+</beans>

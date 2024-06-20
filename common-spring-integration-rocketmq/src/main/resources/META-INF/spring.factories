@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.bitauto.ep.dujiangyan.common.infrastructure.spring.integration.rocketmq.config.BootstrapAutoConfiguration
